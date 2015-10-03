@@ -18,7 +18,6 @@
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  *    SOFTWARE.
  */
-
 #include <math.h>
 #include "simple_logger.h"
 #include "graphics3d.h"
@@ -26,6 +25,14 @@
 #include "obj.h"
 #include "vector.h"
 #include "sprite.h"
+#include <stdio.h>
+#include <string.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include "obj.h"
+#include "boundingbox.h"
+#include "entity.h"
+#include "collisions.h"
 
 void set_camera(Vec3D position, Vec3D rotation);
 
@@ -49,7 +56,13 @@ int main(int argc, char *argv[])
         0.0f, 1.0f, 0.0f, 1.0f,
         0.0f, 0.0f, 1.0f, 1.0f  
     }; //we love you vertices!
-    
+
+	/* Setting up entities */
+	Entity cube1, cube2;
+	cube1.objModel = obj_load("models/cube.obj");
+	cube2.objModel = obj_load("models/cube.obj");
+	//cube1.body.position = 
+
     init_logger("gametest3d.log");
     if (graphics3d_init(1024,768,1,"gametest3d",33) != 0)
     {
