@@ -57,11 +57,9 @@ int main(int argc, char *argv[])
         0.0f, 0.0f, 1.0f, 1.0f  
     }; //we love you vertices!
 
-	/* Setting up entities */
-	Entity cube1, cube2;
-	cube1.objModel = obj_load("models/cube.obj");
-	cube2.objModel = obj_load("models/cube.obj");
-	//cube1.body.position = 
+	/* Entity variables */
+	Entity *cube1, *cube2/*, *sphere1*/;
+	//Vec3D startPos;
 
     init_logger("gametest3d.log");
     if (graphics3d_init(1024,768,1,"gametest3d",33) != 0)
@@ -87,6 +85,10 @@ int main(int argc, char *argv[])
     
 //    obj = obj_load("models/mountainvillage.obj");
     
+	/* Setting up entities */
+	cube1 = ent_New("Cube1", vec3d(1,1,1), newCube(vec3d(-1,-1,-1), vec3d(1,1,1)));
+	cube2 = ent_New("Cube2", vec3d(5,1,1), newCube(vec3d(-1,-1,-1), vec3d(1,1,1)));
+	//sphere1 = ent_New("Sphere1", vec3d(7,1,1), newSphere(vec3d(-1,-1,-1), 1.0));
     
     while (bGameLoopRunning)
     {
@@ -179,8 +181,10 @@ int main(int argc, char *argv[])
         set_camera(
             cameraPosition,
             cameraRotation);
-        
-  
+
+		ent_DrawAll();
+		
+
         obj_draw(
             bgobj,
             vec3d(0,0,2),
@@ -190,14 +194,14 @@ int main(int argc, char *argv[])
             bgtext
         );
         
-        obj_draw(
+        /*obj_draw(
             obj,
             vec3d(0,0,0),
             vec3d(90,r++,0),
             vec3d(0.5,0.5,0.5),
             vec4d(1,1,1,1),
             texture
-        );
+        );*/
         if (r > 360)r -= 360;
         glPopMatrix();
         /* drawing code above here! */

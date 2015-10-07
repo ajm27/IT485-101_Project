@@ -24,8 +24,8 @@ Vec4D vec4d(float x,float y, float z, float w);
 #define vec3d_add(dst,a,b)   (dst.x = a.x+b.x,dst.y = a.y+b.y,dst.z = a.z+b.z)
 #define vec4d_add(dst,a,b)   (dst.x = a.x+b.x,dst.y = a.y+b.y,dst.z = a.z+b.z,dst.w = a.w+b.w)
 
-//#define vec2d_set(dst,src)	 (dst.x = src.x, dst.y = src.y)
-//#define vec3d_set(dst,src)	 (dst.x = src.x, dst.y = src.y, dst.z = src.z)
-//#define vec4d_set(dst,src)	 (dst.x = src.x, dst.y = src.y, dst.z = src.z, dst.w = src.w)
+#define vec2d_set(dst, a, b)		 (dst.x = (a), dst.y = (b))
+#define vec3d_set(dst, a, b, c)		 (dst.x = (a), dst.y = (b), dst.z = (c))
+#define vec4d_set(dst, a, b, c, d)	 (dst.x = (a), dst.y = (b), dst.z = (c), dst.w = (d))
 
 #endif

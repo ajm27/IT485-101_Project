@@ -32,7 +32,7 @@ typedef enum		// enum to allow selection of the volume-type
 	BV_Cube
 }VolumeSelection;
 
-typedef struct		// description of the 
+typedef struct		// description of the bounding volume
 {
 	VolumeType volume;
 	VolumeSelection selection;
@@ -40,6 +40,7 @@ typedef struct		// description of the
 
 BoundingVolume newSphere(Vec3D center,float r);
 BoundingVolume newCube(Vec3D xyz, Vec3D whd);
+void setBoundingVolume(BoundingVolume* bvp, BoundingVolume bv);
 void setBigs(BoundingVolume bv);
 int checkCollision( BoundingVolume bv1, BoundingVolume bv2 );
 #endif

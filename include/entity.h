@@ -1,7 +1,7 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#define MAX_ENT 255
+#define MAX_ENT 1048
 
 typedef struct Body
 {
@@ -38,9 +38,11 @@ typedef struct Entity
 	void	(*die)(struct Entity *self);		// pointer to entity's die function
 }Entity;
 
-Entity* Spawn_Ent();										// Brings entity into game world
-void	entDraw();
-void	entCheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
-void	Kill_Ent (Entity* ent);								// Removes entity from world and frees up memory
+Entity* ent_Spawn();										// Brings entity into game world
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv);
+void	ent_Draw();
+void	ent_DrawAll();
+void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
+void	ent_Kill (Entity* ent);								// Removes entity from world and frees up memory
 
 #endif

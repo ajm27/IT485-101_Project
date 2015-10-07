@@ -29,6 +29,14 @@ BoundingVolume newCube(Vec3D xyz, Vec3D whd)
 	return bv;
 }
 
+void setBoundingVolume(BoundingVolume* bvp, BoundingVolume bv)
+{
+	if(!bvp) return;
+
+	bvp->selection = bv.selection;
+	bvp->volume = bv.volume;
+}
+
 void setBigs(BoundingVolume bv)
 {
 	bv.volume.cube.XYZ.X = bv.volume.cube.x + bv.volume.cube.w + bv.volume.cube.h + bv.volume.cube.d;
