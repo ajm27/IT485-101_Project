@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include "obj.h"
 #include "boundingbox.h"
+#include "body.h"
 #include "entity.h"
 #include "simple_logger.h"
 
@@ -43,8 +44,10 @@ Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv)
 	ent->body.position = position;
 	ent->body.rotation = vec3d(0,0,0);
 	ent->body.scale = vec3d(0.5,0.5,0.5);
-	setBoundingVolume(ent->body.ent_BB, bv);
+	mgl_callback_set(&ent->body.touch,touch_callback,ent);
+	setBoundingVolume(&ent->body.ent_BB, bv);
 	slog("%s 's bounding volume set.", name);
+	strcpy(ent->body.classname, name);
 	ent->texture = NULL;
 	ent->colour = vec4d(1,1,1,0.5);
 
@@ -76,6 +79,22 @@ void ent_DrawAll()
 			//slog("Entity drawn!");
         }
     }
+}
+
+
+void touch_callback(void *data, void *context)
+{
+    Entity *me,*other;
+    Body *obody;
+    if ((!data)||(!context))return;
+    me = (Entity *)data;
+    obody = (Body *)context;
+    if (1/*entity_is_entity(obody->touch.data)*/)
+    {
+        other = (Entity *)obody->touch.data;
+        //slog("%s is ",other->name);
+    }
+    slog("touching me.... touching youuuuuuuu");
 }
 
 void ent_Kill(Entity* ent)

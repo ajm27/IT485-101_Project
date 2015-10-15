@@ -31,8 +31,10 @@
 #include <SDL_image.h>
 #include "obj.h"
 #include "boundingbox.h"
+#include "body.h"
 #include "entity.h"
 #include "collisions.h"
+#include "space.h"
 
 void set_camera(Vec3D position, Vec3D rotation);
 
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
 
 	/* Entity variables */
 	Entity *cube1, *cube2/*, *sphere1*/;
-	//Vec3D startPos;
+	Space *space;
 
     init_logger("gametest3d.log");
     if (graphics3d_init(1024,768,1,"gametest3d",33) != 0)
@@ -86,12 +88,23 @@ int main(int argc, char *argv[])
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	cube1 = ent_New("Cube1", vec3d(1,1,1), newCube(vec3d(-1,-1,-1), vec3d(1,1,1)));
-	cube2 = ent_New("Cube2", vec3d(5,1,1), newCube(vec3d(-1,-1,-1), vec3d(1,1,1)));
+	cube1 = ent_New("Cube1", vec3d(1,1,1), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+	cube2 = ent_New("Cube2", vec3d(5,1,1), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
 	//sphere1 = ent_New("Sphere1", vec3d(7,1,1), newSphere(vec3d(-1,-1,-1), 1.0));
+	cube2->body.velocity.x = -0.1;
+    space = space_New();
+    space_set_steps(space,100);
+
+	space_add_body(space,&cube1->body);
+    space_add_body(space,&cube2->body);
     
-    while (bGameLoopRunning)
+	while (bGameLoopRunning)
     {
+		int i;
+		for (i = 0; i < 100;i++)
+        {
+            space_do_step(space);
+        }
         while ( SDL_PollEvent(&e) ) 
         {
             if (e.type == SDL_QUIT)
@@ -182,6 +195,7 @@ int main(int argc, char *argv[])
             cameraPosition,
             cameraRotation);
 
+
 		ent_DrawAll();
 		
 
@@ -190,7 +204,7 @@ int main(int argc, char *argv[])
             vec3d(0,0,2),
             vec3d(90,90,0),
             vec3d(5,5,5),
-            vec4d(1,1,1,1),
+            vec4d(1,0,0,1),
             bgtext
         );
         

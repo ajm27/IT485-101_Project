@@ -3,17 +3,6 @@
 
 #define MAX_ENT 1048
 
-typedef struct Body
-{
-	Vec3D position;
-	Vec3D rotation;
-	Vec3D scale;
-	Vec3D velocity;
-	Vec3D acceleration;
-
-	BoundingVolume*	ent_BB;
-}Body;
-
 typedef struct Entity 
 {
 	int		inuse;
@@ -44,5 +33,5 @@ void	ent_Draw();
 void	ent_DrawAll();
 void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
 void	ent_Kill (Entity* ent);								// Removes entity from world and frees up memory
-
+void	touch_callback(void *data, void *context);
 #endif

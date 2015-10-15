@@ -41,6 +41,7 @@ typedef struct		// description of the bounding volume
 BoundingVolume newSphere(Vec3D center,float r);
 BoundingVolume newCube(Vec3D xyz, Vec3D whd);
 void setBoundingVolume(BoundingVolume* bvp, BoundingVolume bv);
-void setBigs(BoundingVolume bv);
+void setBigs( Cube cube );
 int checkCollision( BoundingVolume bv1, BoundingVolume bv2 );
+int ScissorMeXerxes( Cube a, Cube b ); // Cube_verus_Cube method
 #endif

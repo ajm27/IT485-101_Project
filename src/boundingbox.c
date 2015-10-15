@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include "simple_logger.h"
 #include "vector.h"
 #include "boundingbox.h"
 
@@ -37,23 +38,20 @@ void setBoundingVolume(BoundingVolume* bvp, BoundingVolume bv)
 	bvp->volume = bv.volume;
 }
 
-void setBigs(BoundingVolume bv)
+void setBigs( Cube cube )
 {
-	bv.volume.cube.XYZ.X = bv.volume.cube.x + bv.volume.cube.w + bv.volume.cube.h + bv.volume.cube.d;
-	bv.volume.cube.XYZ.Y = bv.volume.cube.y + bv.volume.cube.w + bv.volume.cube.h + bv.volume.cube.d;
-	bv.volume.cube.XYZ.Z = bv.volume.cube.z + bv.volume.cube.w + bv.volume.cube.h + bv.volume.cube.d;
+	cube.XYZ.X = cube.x + cube.w + cube.h + cube.d;
+	cube.XYZ.Y = cube.y + cube.w + cube.h + cube.d;
+	cube.XYZ.Z = cube.z + cube.w + cube.h + cube.d;
 }
 
-int ScissorMeXerxes( BoundingVolume bv1, BoundingVolume bv2 ) // Cube_verus_Cube method
+int ScissorMeXerxes( Cube a, Cube b ) // Cube_verus_Cube method
 {
-	setBigs(bv1);
-	setBigs(bv2);
-	if (bv1.volume.cube.XYZ.X < bv2.volume.cube.x ||
-		bv1.volume.cube.XYZ.Y < bv2.volume.cube.y ||
-		bv1.volume.cube.XYZ.Z < bv2.volume.cube.z ||
-		bv2.volume.cube.XYZ.X < bv1.volume.cube.x ||
-		bv2.volume.cube.XYZ.Y < bv1.volume.cube.y ||
-		bv2.volume.cube.XYZ.Z < bv1.volume.cube.z)
+	/*setBigs(a);
+	setBigs(b);*/
+	if ((a.x > b.x + b.w) || (b.x > a.x + a.w) ||
+        (a.y > b.y + b.h) || (b.y > a.y + a.h) ||
+        (a.z > b.z + b.d) || (b.z > a.z + a.d))
 	{
 		return 0;
 	}
@@ -83,8 +81,8 @@ int checkCollision ( BoundingVolume bv1, BoundingVolume bv2 )
 {
 	if (bv1.selection == BV_Cube && bv2.selection == BV_Cube)
 	{
-		fprintf (stderr, "Cube V Cube Checked");
-		return ScissorMeXerxes( bv1, bv2 );
+		//fprintf (stderr, "Cube V Cube Checked");
+		//return ScissorMeXerxes( bv1, bv2 );
 	}
 	if ((bv1.selection == BV_Cube && bv2.selection == BV_Sphere) || 
 			  (bv1.selection == BV_Sphere && bv2.selection == BV_Cube))
