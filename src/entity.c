@@ -31,7 +31,7 @@ Entity* ent_Spawn()
 	return NULL;
 }
 
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv)
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour)
 {
 	Entity *ent;
 	ent = ent_Spawn();
@@ -49,7 +49,7 @@ Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv)
 	slog("%s 's bounding volume set.", name);
 	strcpy(ent->body.classname, name);
 	ent->texture = NULL;
-	ent->colour = vec4d(1,1,1,0.5);
+	ent->colour = colour;
 
 	return ent;
 }
@@ -94,7 +94,7 @@ void touch_callback(void *data, void *context)
         other = (Entity *)obody->touch.data;
         //slog("%s is ",other->name);
     }
-    slog("touching me.... touching youuuuuuuu");
+    //slog("touching me.... touching youuuuuuuu");
 }
 
 void ent_Kill(Entity* ent)

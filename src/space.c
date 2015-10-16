@@ -73,8 +73,8 @@ static void space_body_update(Space *space,Body* body)
     a.h = body->ent_BB.volume.cube.h;
     a.d = body->ent_BB.volume.cube.d;
 	
-	slog("%s: Position %.2f, %.2f, %.2f", body->classname, body->position.x, body->position.y, body->position.z);
-	slog("%s: Absolute Bounds %.2f, %.2f, %.2f, %.2f, %.2f, %.2f,", body->classname, a.x, a.y, a.z, a.w, a.h, a.d);
+	//slog("%s: Position %.2f, %.2f, %.2f", body->classname, body->position.x, body->position.y, body->position.z);
+	//slog("%s: Absolute Bounds %.2f, %.2f, %.2f, %.2f, %.2f, %.2f,", body->classname, a.x, a.y, a.z, a.w, a.h, a.d);
 
     for (it = space->bodylist;it != NULL;it = g_list_next(it))
     {
@@ -90,14 +90,14 @@ static void space_body_update(Space *space,Body* body)
         b.h = other->ent_BB.volume.cube.h;
         b.d = other->ent_BB.volume.cube.d;
 		
-		slog("%s: %.2f, %.2f, %.2f", other->classname, other->position.x, other->position.y, other->position.z);
-		slog("%s: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f,", other->classname, b.x, b.y, b.z, b.w, b.h, b.d);
+		//slog("%s: %.2f, %.2f, %.2f", other->classname, other->position.x, other->position.y, other->position.z);
+		//slog("%s: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f,", other->classname, b.x, b.y, b.z, b.w, b.h, b.d);
 
 
         vec3d_add(b,b,other->ent_BB.volume.cube);
 		if (ScissorMeXerxes(a,b))
         {
-			slog("ScissorMeXerxes is true");
+			//slog("ScissorMeXerxes is true");
             /*call touch functions*/
             /*back the fuck off*/
             vec3d_cpy(body->backOffVec, stepOffVector);
@@ -106,7 +106,7 @@ static void space_body_update(Space *space,Body* body)
             if (body->touch.function)
             {
                 body->touch.function(body->touch.data,other);
-				slog("collision");
+				//slog("collision");
             }
         }
     }

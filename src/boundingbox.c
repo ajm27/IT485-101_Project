@@ -38,12 +38,12 @@ void setBoundingVolume(BoundingVolume* bvp, BoundingVolume bv)
 	bvp->volume = bv.volume;
 }
 
-void setBigs( Cube cube )
-{
-	cube.XYZ.X = cube.x + cube.w + cube.h + cube.d;
-	cube.XYZ.Y = cube.y + cube.w + cube.h + cube.d;
-	cube.XYZ.Z = cube.z + cube.w + cube.h + cube.d;
-}
+//void setBigs( Cube cube )
+//{
+//	cube.XYZ.X = cube.x + cube.w + cube.h + cube.d;
+//	cube.XYZ.Y = cube.y + cube.w + cube.h + cube.d;
+//	cube.XYZ.Z = cube.z + cube.w + cube.h + cube.d;
+//}
 
 int ScissorMeXerxes( Cube a, Cube b ) // Cube_verus_Cube method
 {

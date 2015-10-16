@@ -36,6 +36,7 @@
 #include "collisions.h"
 #include "space.h"
 
+void spawn_camera();
 void set_camera(Vec3D position, Vec3D rotation);
 
 int main(int argc, char *argv[])
@@ -44,8 +45,9 @@ int main(int argc, char *argv[])
     float r = 0;
     GLuint triangleBufferObject;
     char bGameLoopRunning = 1;
-    Vec3D cameraPosition = {0,-10,0.3};
-    Vec3D cameraRotation = {90,0,0};
+    Vec3D cameraPosition = {-34,-52,19.3};
+    Vec3D cameraRotation = {57,0,0};
+	Vec3D _origin = {0.0, 0.0, 0.0};
     SDL_Event e;
     Obj *obj,*bgobj;
     Sprite *texture,*bgtext;
@@ -60,7 +62,7 @@ int main(int argc, char *argv[])
     }; //we love you vertices!
 
 	/* Entity variables */
-	Entity *cube1, *cube2/*, *sphere1*/;
+	Entity *player, *cube2/*, *sphere1*/;
 	Space *space;
 
     init_logger("gametest3d.log");
@@ -82,25 +84,38 @@ int main(int argc, char *argv[])
     obj = obj_load("models/cube.obj");
     texture = LoadSprite("models/cube_text.png",1024,1024);
 
-    bgobj = obj_load("models/mountainvillage.obj");
+    bgobj = obj_load("models/map3.obj");
     bgtext = LoadSprite("models/mountain_text.png",1024,1024);
     
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	cube1 = ent_New("Cube1", vec3d(1,1,1), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
-	cube2 = ent_New("Cube2", vec3d(5,1,1), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+	player = ent_New("Player", vec3d(-34,-40,10), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1));
+	cube2 = ent_New("Cube2", vec3d(-29,-40,10), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1));
 	//sphere1 = ent_New("Sphere1", vec3d(7,1,1), newSphere(vec3d(-1,-1,-1), 1.0));
+
 	cube2->body.velocity.x = -0.1;
     space = space_New();
     space_set_steps(space,100);
 
-	space_add_body(space,&cube1->body);
+	space_add_body(space,&player->body);
     space_add_body(space,&cube2->body);
     
+	//spawn_camera();
+
 	while (bGameLoopRunning)
     {
+		int started = 1;
+		int count = 0;
 		int i;
+
+		if(count < 200000)
+		{
+			//slog("Camera Pos: %.2f, %.2f, %.2f", cameraPosition.x, cameraPosition.y, cameraPosition.z);
+			//slog("Camera Rot: %.2f, %.2f, %.2f", cameraRotation.x, cameraRotation.y, cameraRotation.z);
+			//slog("%.2f, %.2f, %.2f", player->body.position.x, player->body.position.y, player->body.position.z);
+			count++;
+		}
 		for (i = 0; i < 100;i++)
         {
             space_do_step(space);
@@ -119,71 +134,106 @@ int main(int argc, char *argv[])
                 }
                 else if (e.key.keysym.sym == SDLK_SPACE)
                 {
-                    cameraPosition.z++;
+                    //cameraPosition.z++;
+					player->body.position.z++;
                 }
                 else if (e.key.keysym.sym == SDLK_z)
                 {
-                    cameraPosition.z--;
+                    //cameraPosition.z--;
                 }
                 else if (e.key.keysym.sym == SDLK_w)
                 {
-                    vec3d_add(
+                    /*vec3d_add(
                         cameraPosition,
                         cameraPosition,
                         vec3d(
                             -sin(cameraRotation.z * DEGTORAD),
                             cos(cameraRotation.z * DEGTORAD),
+                            0
+                        ));*/
+					vec3d_add(
+						player->body.position,
+                        player->body.position,
+                        vec3d(
+                            -sin(player->body.rotation.z * DEGTORAD),
+                            cos(player->body.rotation.z * DEGTORAD),
                             0
                         ));
                 }
                 else if (e.key.keysym.sym == SDLK_s)
                 {
-                    vec3d_add(
+                    /*vec3d_add(
                         cameraPosition,
                         cameraPosition,
                         vec3d(
                             sin(cameraRotation.z * DEGTORAD),
                             -cos(cameraRotation.z * DEGTORAD),
                             0
+                        ));*/
+					vec3d_add(
+						player->body.position,
+                        player->body.position,
+                        vec3d(
+                            sin(player->body.rotation.z * DEGTORAD),
+                            -cos(player->body.rotation.z * DEGTORAD),
+                            0
                         ));
                 }
                 else if (e.key.keysym.sym == SDLK_d)
                 {
-                    vec3d_add(
+                    /*vec3d_add(
                         cameraPosition,
                         cameraPosition,
                         vec3d(
                             cos(cameraRotation.z * DEGTORAD),
                             sin(cameraRotation.z * DEGTORAD),
                             0
-                        ));
+                        ));*/
+					/*vec3d_add(
+						player->body.position,
+                        player->body.position,
+                        vec3d(
+                            cos(player->body.position.z * DEGTORAD),
+							sin(player->body.position.z * DEGTORAD),
+                            0
+                        ));*/
+					player->body.rotation.z -= 5;
                 }
                 else if (e.key.keysym.sym == SDLK_a)
                 {
-                    vec3d_add(
+                   /* vec3d_add(
                         cameraPosition,
                         cameraPosition,
                         vec3d(
                             -cos(cameraRotation.z * DEGTORAD),
                             -sin(cameraRotation.z * DEGTORAD),
                             0
-                        ));
+                        ));*/
+					/*vec3d_add(
+						player->body.position,
+                        player->body.position,
+                        vec3d(
+                            -cos(player->body.position.z * DEGTORAD),
+							-sin(player->body.position.z * DEGTORAD),
+                            0
+                        ));*/
+					player->body.rotation.z += 5;
                 }
                 else if (e.key.keysym.sym == SDLK_LEFT)
                 {
-                    cameraRotation.z += 1;
+                    //cameraRotation.z += 1;
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                 {
-                    cameraRotation.z -= 1;
+                    //cameraRotation.z -= 1;
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
-                    cameraRotation.x += 1;
+                    //cameraRotation.x += 1;
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {
-                    cameraRotation.x -= 1;
+                    //cameraRotation.x -= 1;
                 }
             }
         }
@@ -191,10 +241,10 @@ int main(int argc, char *argv[])
         graphics3d_frame_begin();
         
         glPushMatrix();
-        set_camera(
-            cameraPosition,
-            cameraRotation);
 
+		set_camera(
+			cameraPosition,
+			cameraRotation);
 
 		ent_DrawAll();
 		
@@ -224,14 +274,25 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+void spawn_camera()
+{
+	Vec3D tempPos, tempRot;
+
+	tempPos = vec3d(-34.0, -52.0, 19.3);
+	tempRot = vec3d(57.0, 0.0, 0);
+	set_camera(tempPos, tempRot);
+
+	slog("Called");
+}
+
 void set_camera(Vec3D position, Vec3D rotation)
 {
-    glRotatef(-rotation.x, 1.0f, 0.0f, 0.0f);
-    glRotatef(-rotation.y, 0.0f, 1.0f, 0.0f);
-    glRotatef(-rotation.z, 0.0f, 0.0f, 1.0f);
-    glTranslatef(-position.x,
-                 -position.y,
-                 -position.z);
+    glRotatef(-(rotation.x), 1.0f, 0.0f, 0.0f);
+    glRotatef(-(rotation.y), 0.0f, 1.0f, 0.0f);
+    glRotatef(-(rotation.z), 0.0f, 0.0f, 1.0f);
+    glTranslatef(-(position.x),
+                 -(position.y),
+                 -(position.z));
 }
 
 /*eol@eof*/
