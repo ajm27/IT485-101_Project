@@ -28,6 +28,9 @@
 
 #define TWOPI 6.283185308
 
+#define OFFSET_HEIGHT 4
+#define OFFSET_DEPTH 5
+
 /* conversion factor for converting from radians to degrees*/
 #define RADTODEG  57.295779513082
 
