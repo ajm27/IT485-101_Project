@@ -31,7 +31,7 @@ Entity* ent_Spawn()
 	return NULL;
 }
 
-Entity* ent_New(const char *name, Vec3D position, Vec3D rotation, BoundingVolume bv, Vec3D scale, Vec4D colour)
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour)
 {
 	Entity *ent;
 	ent = ent_Spawn();
@@ -42,8 +42,8 @@ Entity* ent_New(const char *name, Vec3D position, Vec3D rotation, BoundingVolume
 	if(bv.selection == 1)
 		ent->objModel = obj_load("models/handgun.obj");
 	ent->body.position = position;
-	ent->body.rotation = rotation;
-	ent->body.scale = scale;
+	ent->body.rotation = vec3d(0,0,0);
+	ent->body.scale = vec3d(0.5,0.5,0.5);
 	mgl_callback_set(&ent->body.touch,touch_callback,ent);
 	setBoundingVolume(&ent->body.ent_BB, bv);
 	slog("%s 's bounding volume set.", name);
@@ -71,7 +71,7 @@ void ent_Draw(Entity *ent)
 void ent_DrawAll()
 {
     int i;
-    for (i = 0;i < MAX_ENT;i++)
+    for (i = 0;i < 1048/*ENT_MAX*/;i++)
     {
         if (entList[i].inuse)
         {

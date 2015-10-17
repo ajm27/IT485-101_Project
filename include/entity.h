@@ -28,7 +28,7 @@ typedef struct Entity
 }Entity;
 
 Entity* ent_Spawn();										// Brings entity into game world
-Entity* ent_New(const char *name, Vec3D position, Vec3D rotation, BoundingVolume bv, Vec3D scale, Vec4D colour);
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour);
 void	ent_Draw();
 void	ent_DrawAll();
 void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
