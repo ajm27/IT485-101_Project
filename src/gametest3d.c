@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     }; //we love you vertices!
 
 	/* Entity variables */
-	Entity *player, *cube2, *sphere1;
+	Entity *player, *cube2, *gun;
 	Space *space;
 
     init_logger("gametest3d.log");
@@ -91,9 +91,25 @@ int main(int argc, char *argv[])
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	player = ent_New("Player", vec3d(-34,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1));
-	cube2 = ent_New("Cube2", vec3d(-29,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1));
-	//sphere1 = ent_New("Sphere1", vec3d(-35.5,-40,0), newSphere(vec3d(-1,-1,-1), 1.0), vec4d(1,0,1,1));
+	player = ent_New("Player", 
+						vec3d(-34,-40,0),
+						vec3d(0,0,0),
+						newCube(vec3d(-1,-1,-1), 
+						vec3d(2,2,2)), 
+						vec3d(0.5,0.5,0.5), 
+						vec4d(1,0,0,1));
+	cube2 = ent_New("Cube2", 
+						vec3d(-29,-40,0),
+						vec3d(0,0,0),
+						newCube(vec3d(-1,-1,-1), 
+						vec3d(2,2,2)), vec3d(0.5,0.5,0.5), 
+						vec4d(0,1,0,1));
+	gun = ent_New("gun", 
+						vec3d(-35.5,-40,0),
+						vec3d(90,180,0), 
+						newSphere(vec3d(-1,-1,-1), 1.0), 
+						vec3d(0.25,0.25,0.25), 
+						vec4d(1,0,1,1));
 
 	cube2->body.velocity.x = -0.1;
     space = space_New();
@@ -101,7 +117,7 @@ int main(int argc, char *argv[])
 
 	space_add_body(space,&player->body);
     space_add_body(space,&cube2->body);
-	//space_add_body(space,&sphere1->body);
+	space_add_body(space,&gun->body);
 
 	while (bGameLoopRunning)
     {
@@ -249,7 +265,7 @@ int main(int argc, char *argv[])
 
 		set_camera(
 			rtn_camera_position(cameraPosition, cameraRotation, player->body.position, player->body.rotation),
-			cameraRotation/*rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation)*/);
+			/*cameraRotation*/rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation));
 		/*set_camera(
 			cameraPosition,
 			cameraRotation,
@@ -285,14 +301,14 @@ int main(int argc, char *argv[])
 
 Vec3D rtn_camera_position(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
 {
-	Vec3D newPos;
+	Vec3D temp;
 
-	newPos.x = (sin(bodRot.z) * OFFSET_DEPTH) + bodPos.x;
-	newPos.y = (-cos(bodRot.z) * OFFSET_DEPTH) + bodPos.y;
+	temp.x = (sin(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.x;
+	temp.y = (-cos(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.y;
 
-	newPos.z = OFFSET_HEIGHT;
+	temp.z = OFFSET_HEIGHT;
 
-	return newPos;
+	return temp;
 }
 
 Vec3D rtn_camera_rotation(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
