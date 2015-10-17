@@ -103,9 +103,6 @@ int main(int argc, char *argv[])
     space_add_body(space,&cube2->body);
 	//space_add_body(space,&sphere1->body);
 
-	//cameraPosition = rtn_camera_position(cameraPosition, cameraRotation, player->body.position, player->body.rotation);
-	//cameraRotation = rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation);
-
 	while (bGameLoopRunning)
     {
 		int started = 1;
@@ -237,11 +234,11 @@ int main(int argc, char *argv[])
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
-                    //cameraRotation.x += 1;
+                    cameraRotation.x += 1;
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {
-                    //cameraRotation.x -= 1;
+                    cameraRotation.x -= 1;
                 }
             }
         }
@@ -252,9 +249,7 @@ int main(int argc, char *argv[])
 
 		set_camera(
 			rtn_camera_position(cameraPosition, cameraRotation, player->body.position, player->body.rotation),
-			//cameraRotation
-			rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation)
-			);
+			cameraRotation/*rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation)*/);
 		/*set_camera(
 			cameraPosition,
 			cameraRotation,
@@ -290,36 +285,29 @@ int main(int argc, char *argv[])
 
 Vec3D rtn_camera_position(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
 {
-	Vec3D temp;
+	Vec3D newPos;
 
-	temp.x = (sin(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.x;
-	temp.y = (-cos(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.y;
+	newPos.x = (sin(bodRot.z) * OFFSET_DEPTH) + bodPos.x;
+	newPos.y = (-cos(bodRot.z) * OFFSET_DEPTH) + bodPos.y;
 
-	temp.z = OFFSET_HEIGHT;
+	newPos.z = OFFSET_HEIGHT;
 
-	return temp;
+	return newPos;
 }
-
-//Vec3D rtn_camera_rotation(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
-//{
-//	float x, y, t;
-//	Vec3D temp = {0,0,0};
-//
-//	x = camPos.x - bodPos.x;
-//	y = camPos.y - bodPos.y;
-//
-//	t = x/y;
-//
-//	temp.z = t;
-//
-//	return temp;
-//}
 
 Vec3D rtn_camera_rotation(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
 {
-	camRot.z = bodRot.z;
+	float x, y, t;
+	Vec3D temp;
 
-	return camRot;
+	x = camPos.x - bodPos.x;
+	y = camPos.y - bodPos.y;
+
+	t = x/y;
+
+	temp.z = t;
+
+	return temp;
 }
 
 void set_camera(Vec3D position, Vec3D rotation)
