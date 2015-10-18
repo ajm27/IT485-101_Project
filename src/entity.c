@@ -4,6 +4,7 @@
 #include <SDL_image.h>
 #include "obj.h"
 #include "boundingbox.h"
+#include "items.h"
 #include "body.h"
 #include "entity.h"
 #include "simple_logger.h"

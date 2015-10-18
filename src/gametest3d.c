@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
     }; //we love you vertices!
 
 	/* Entity variables */
-	Entity *player, *cube2, *sphere1;
+	Entity *player, *cube2, *floor/**sphere1*/;
 	Space *space;
 
     init_logger("gametest3d.log");
@@ -93,6 +93,7 @@ int main(int argc, char *argv[])
 	/* Setting up entities */
 	player = ent_New("Player", vec3d(-34,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1));
 	cube2 = ent_New("Cube2", vec3d(-29,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1));
+	floor = ent_New("Floor", vec3d(0,0,0), newCube(vec3d(-10,-10,-10), vec3d(1,1,1)), vec4d(0,0,0,1));
 	//sphere1 = ent_New("Sphere1", vec3d(-35.5,-40,0), newSphere(vec3d(-1,-1,-1), 1.0), vec4d(1,0,1,1));
 
 	cube2->body.velocity.x = -0.1;
@@ -249,7 +250,9 @@ int main(int argc, char *argv[])
 
 		set_camera(
 			rtn_camera_position(cameraPosition, cameraRotation, player->body.position, player->body.rotation),
-			cameraRotation/*rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation)*/);
+			//cameraRotation
+			rtn_camera_rotation(cameraPosition, cameraRotation, player->body.position, player->body.rotation)
+			);
 		/*set_camera(
 			cameraPosition,
 			cameraRotation,
@@ -287,27 +290,19 @@ Vec3D rtn_camera_position(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot
 {
 	Vec3D newPos;
 
-	newPos.x = (sin(bodRot.z) * OFFSET_DEPTH) + bodPos.x;
-	newPos.y = (-cos(bodRot.z) * OFFSET_DEPTH) + bodPos.y;
+	newPos.x = (sin(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.x;
+	newPos.y = (-cos(bodRot.z * DEGTORAD) * OFFSET_DEPTH) + bodPos.y;
 
-	newPos.z = OFFSET_HEIGHT;
+	newPos.z = bodPos.z + OFFSET_HEIGHT;
 
 	return newPos;
 }
 
 Vec3D rtn_camera_rotation(Vec3D camPos, Vec3D camRot, Vec3D bodPos, Vec3D bodRot)
 {
-	float x, y, t;
-	Vec3D temp;
+	camRot.z = bodRot.z;
 
-	x = camPos.x - bodPos.x;
-	y = camPos.y - bodPos.y;
-
-	t = x/y;
-
-	temp.z = t;
-
-	return temp;
+	return camRot;
 }
 
 void set_camera(Vec3D position, Vec3D rotation)
