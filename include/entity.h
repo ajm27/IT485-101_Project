@@ -2,7 +2,6 @@
 #define __ENTITY_H__
 
 #define MAX_ENT 1048
-#define GRAVITY -9.8
 
 typedef struct Entity 
 {
@@ -15,10 +14,6 @@ typedef struct Entity
 	Body    body;
 
 	Obj	    *objModel;
-
-	int		inventorylength;
-	//Item	*inventory;
-	int		currentweapon;
 
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity
