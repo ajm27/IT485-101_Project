@@ -15,6 +15,8 @@ typedef struct Entity
 
 	Obj	    *objModel;
 
+	//Weapon inventory[4];
+
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity
 	struct Entity	*target;	// waypoint of entity to move to onSpawn

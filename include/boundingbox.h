@@ -1,6 +1,8 @@
 #ifndef __BOUNDNIGBOX_H__
 #define __BOUNDNIGBOX_H__
 
+#include "vector.h"
+
 typedef struct
 {
 	float X, Y, Z;  // x, y ,z coordinates for the opposite corner of the cube

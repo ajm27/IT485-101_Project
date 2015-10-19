@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include "simple_logger.h"
-#include "vector.h"
 #include "boundingbox.h"
 
 BoundingVolume newSphere(Vec3D center,float r)
