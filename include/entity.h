@@ -3,6 +3,8 @@
 
 #define MAX_ENT 1048
 
+#include "weapon.h"
+
 typedef struct Entity 
 {
 	int		inuse;

@@ -6,7 +6,6 @@
 #include "boundingbox.h"
 #include "body.h"
 #include "entity.h"
-#include "weapon.h"
 #include "simple_logger.h"
 
 Entity entList[MAX_ENT];
