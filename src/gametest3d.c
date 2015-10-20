@@ -252,7 +252,12 @@ int main(int argc, char *argv[])
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
-                    cameraRotation.x += 1;
+					int i;
+					for(i = 0; i < 4; i++)
+					{
+						slog("Slot %i: %s", i, player->inventory[i]);
+					}
+                    //cameraRotation.x += 1;
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {

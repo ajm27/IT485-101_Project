@@ -3,6 +3,9 @@
 
 #define MAX_ENT 1048
 
+#include <SDL.h>
+#include <SDL_image.h>
+#include "obj.h"
 #include "weapon.h"
 
 typedef struct Entity 
@@ -17,7 +20,7 @@ typedef struct Entity
 
 	Obj	    *objModel;
 
-	//Weapon inventory[4];
+	Weapon inventory[MAX_WEAP];
 
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity

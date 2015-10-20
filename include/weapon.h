@@ -5,8 +5,6 @@
 #include <string.h>
 #include <glib.h>
 #include "vector.h"
-#include "obj.h"
-#include "body.h"
 #include "entity.h"
 
 #define MAX_WEAP 4
@@ -22,7 +20,7 @@ typedef struct Weapon_S
 
 	Vec3D offset;
 
-	Body *body;
+	Body body;
 
 	//struct Weapon *self;
 	struct Entity *owner;
@@ -38,6 +36,6 @@ typedef struct Weapon_S
 } Weapon;
 
 Weapon* weapon_Spawn();
-void weapon_setup(Entity *ent, Weapon *weapons[]);
+//void weapon_setup(Entity *ent, Weapon *weapons[]);
 
 #endif

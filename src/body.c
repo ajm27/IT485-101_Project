@@ -17,15 +17,15 @@ void body_process(Body *body)
     }
 }
 
-Body* body_Spawn(Vec3D _position, Vec3D _rotation, Vec3D _scale, BoundingVolume	_ent_BB)
+Body body_Spawn(Vec3D _position, Vec3D _rotation, Vec3D _scale, BoundingVolume	_ent_BB)
 {
-	Body *body;
+	Body body;
 
-	vec3d_cpy(body->position, _position);
-	vec3d_cpy(body->rotation, _rotation);
-	vec3d_cpy(body->scale, _scale);
+	vec3d_cpy(body.position, _position);
+	vec3d_cpy(body.rotation, _rotation);
+	vec3d_cpy(body.scale, _scale);
 
-	body->ent_BB = _ent_BB;
+	body.ent_BB = _ent_BB;
 
 	return body;
 }

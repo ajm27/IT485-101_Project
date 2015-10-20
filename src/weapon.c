@@ -7,9 +7,8 @@
 //#include "mgl_callback.h"
 #include "boundingbox.h"
 #include "body.h"
-//#include "entity.h"
-//#include "space.h"
 #include "simple_logger.h"
+#include "entity.h"
 #include "weapon.h"
 
 Weapon weapList[MAX_WEAP];
@@ -37,13 +36,63 @@ Weapon* weapon_Spawn()
 
 void weapon_setup(Entity *ent, Weapon *weapons[])
 {
-	/*weapons[0] = weapon_Spawn();
+	weapons[0] = weapon_Spawn();
 	strcpy(weapons[0]->item_name,"weapon_knife");
 	strcpy(weapons[0]->ammo_type,"none");
 	weapons[0]->max_ammo = 0;
 	weapons[0]->damage	 = 50;
+	weapons[0]->offset   = vec3d(1.1,1.1,1.1);
 	weapons[0]->body	 = body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-0.25,-0.25,-0.25),vec3d(-0.25,-0.25,-0.25)));
-	weapons[0]->owner    = ent;*/
+	weapons[0]->owner    = ent;
+	weapons[0]->objmodel = obj_load("models/knife.obj");
+	weapons[0]->colour   = vec4d(0,0,0,1);
+	weapons[0]->texture	 = NULL;
+
+	slog("Knife set: %s with ammo %s", weapons[0]->item_name, weapons[0]->ammo_type);
+
+	weapons[1] = weapon_Spawn();
+	strcpy(weapons[1]->item_name,"weapon_handgun");
+	strcpy(weapons[1]->ammo_type,"bullets");
+	weapons[1]->max_ammo = 36;
+	weapons[1]->damage	 = 25;
+	weapons[1]->offset   = vec3d(1.1,1.1,1.1);
+	weapons[1]->body	 = body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-0.25,-0.25,-0.25),vec3d(-0.25,-0.25,-0.25)));
+	weapons[1]->owner    = ent;
+	weapons[1]->objmodel = obj_load("models/handgun.obj");
+	weapons[1]->colour   = vec4d(0,0,0,1);
+	weapons[1]->texture	 = NULL;
+
+	slog("Knife set: %s with ammo %s", weapons[1]->item_name, weapons[1]->ammo_type);
+
+	weapons[2] = weapon_Spawn();
+	strcpy(weapons[2]->item_name,"weapon_assaultrifle");
+	strcpy(weapons[2]->ammo_type,"bullets");
+	weapons[2]->max_ammo = 120;
+	weapons[2]->damage	 = 35;
+	weapons[2]->offset   = vec3d(1.1,1.1,1.1);
+	weapons[2]->body	 = body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-0.25,-0.25,-0.25),vec3d(-0.25,-0.25,-0.25)));
+	weapons[2]->owner    = ent;
+	weapons[2]->objmodel = obj_load("models/M16.obj");
+	weapons[2]->colour   = vec4d(0,0,0,1);
+	weapons[2]->texture	 = NULL;
+
+	slog("Knife set: %s with ammo %s", weapons[2]->item_name, weapons[2]->ammo_type);
+
+	weapons[3] = weapon_Spawn();
+	strcpy(weapons[3]->item_name,"weapon_grenade");
+	strcpy(weapons[3]->ammo_type,"grenade");
+	weapons[3]->max_ammo = 3;
+	weapons[3]->damage	 = 105;
+	weapons[3]->offset   = vec3d(1.1,1.1,1.1);
+	weapons[3]->body	 = body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-0.25,-0.25,-0.25),vec3d(-0.25,-0.25,-0.25)));
+	weapons[3]->owner    = ent;
+	weapons[3]->objmodel = obj_load("models/grenade.obj");
+	weapons[3]->colour   = vec4d(0,0,0,1);
+	weapons[3]->texture	 = NULL;
+
+	slog("Knife set: %s with ammo %s", weapons[3]->item_name, weapons[3]->ammo_type);
+
+	memcpy(ent->inventory,weapons,sizeof(weapons)); 
 }
 
 //Weapon weaponList[] =

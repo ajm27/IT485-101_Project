@@ -26,6 +26,6 @@ typedef struct Body_S
 
 void	body_reset(Body* body);							// Resets body's pre-physics calculation
 void	body_process(Body* body);					// Checks to see if a body needs a back off
-Body   *body_Spawn(Vec3D _position, Vec3D _rotation, Vec3D _scale, BoundingVolume	_ent_BB);
+Body    body_Spawn(Vec3D _position, Vec3D _rotation, Vec3D _scale, BoundingVolume	_ent_BB);
 
 #endif
