@@ -1,17 +1,40 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#define MAX_ENT 1048
+#define MAX_ENT  1048
+#define MAX_WEAP 4
 
 #include <SDL.h>
 #include <SDL_image.h>
 #include "obj.h"
 #include "weapon.h"
 
+typedef struct Weapon_S 
+{
+	int inuse;
+
+	char item_name[50];
+	char ammo_type[50];
+	int max_ammo;
+	int damage;
+
+	Vec3D offset;
+	Vec3D position;
+	Vec3D rotation;
+	Vec3D scale;
+
+	Obj	   *objmodel;
+	Vec4D   colour;
+	Sprite *texture;
+
+} Weapon;
+
 typedef struct Entity 
 {
 	int		inuse;
 	int		uid;		/**<unique id of this entity*/
+
+	int		hasWeapons;
 
 	Vec4D   colour;
 	Sprite  *texture;
@@ -20,7 +43,8 @@ typedef struct Entity
 
 	Obj	    *objModel;
 
-	Weapon inventory[MAX_WEAP];
+	Weapon *inventory;
+	int		currentweapon;
 
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity
@@ -35,10 +59,17 @@ typedef struct Entity
 }Entity;
 
 Entity* ent_Spawn();										// Brings entity into game world
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour);
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons);
+void	ent_SetInventory(Entity *ent, Weapon *weapons);
 void	ent_Draw();
 void	ent_DrawAll();
 void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
 void	ent_Kill (Entity* ent);								// Removes entity from world and frees up memory
+
+Weapon* weapon_Start();
+Weapon* weapon_Spawn();
+Weapon* weapon_setup(Entity *ent);
+void	weapon_Switch(Entity *ent, int i);
+
 void	touch_callback(void *data, void *context);
 #endif

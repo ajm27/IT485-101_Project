@@ -102,16 +102,16 @@ int main(int argc, char *argv[])
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	player = ent_New("Player", vec3d(-34,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1));
-	cube2 = ent_New("Cube2", vec3d(-29,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1));
+	player = ent_New("Player", vec3d(-34,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1), 1);
+	//cube2 = ent_New("Cube2", vec3d(-29,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1), 0);
 	//sphere1 = ent_New("Sphere1", vec3d(-35.5,-40,0), newSphere(vec3d(-1,-1,-1), 1.0), vec4d(1,0,1,1));
 
-	cube2->body.velocity.x = -0.1;
+	//cube2->body.velocity.x = -0.1;
     space = space_New();
     space_set_steps(space,100);
 
 	space_add_body(space,&player->body);
-    space_add_body(space,&cube2->body);
+    //space_add_body(space,&cube2->body);
 	//space_add_body(space,&sphere1->body);
 
 	weapons[0] = &knife;
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 	weapons[2] = &assault;
 	weapons[3] = &grenade;
 
-	weapon_setup(player, weapons);
+	//weapon_setup(player, weapons);
 
 	while (bGameLoopRunning)
     {
@@ -159,6 +159,22 @@ int main(int argc, char *argv[])
                 {
                     //cameraPosition.z--;
 					player->body.position.z--;
+                }
+				  else if (e.key.keysym.sym == SDLK_q)
+                {
+					player->currentweapon--;
+					if(player->currentweapon < 0) {player->currentweapon = 3;}
+					slog("Current weapon: %i", player->currentweapon);
+					slog("Current weapon: %s", player->inventory[player->currentweapon].item_name);
+                    //weapon_Switch(player, 0);
+                }
+				  else if (e.key.keysym.sym == SDLK_e)
+                {
+					player->currentweapon++;
+					if(player->currentweapon > 3) {player->currentweapon = 0;}
+					slog("Current weapon: %i", player->currentweapon);
+					slog("Current weapon: %s", player->inventory[player->currentweapon].item_name);
+					//weapon_Switch(player, 1);
                 }
                 else if (e.key.keysym.sym == SDLK_w)
                 {
@@ -255,7 +271,7 @@ int main(int argc, char *argv[])
 					int i;
 					for(i = 0; i < 4; i++)
 					{
-						slog("Slot %i: %s", i, player->inventory[i]);
+						slog("Slot %i: %s", i, player->inventory[i].item_name);
 					}
                     //cameraRotation.x += 1;
                 }
