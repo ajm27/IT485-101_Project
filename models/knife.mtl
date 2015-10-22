@@ -1,0 +1,43 @@
+# Blender MTL File: 'Ka-Bar.blend'
+# Material Count: 4
+
+newmtl Blade_(tex)
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture.jpg
+map_Bump Texture.jpg
+
+newmtl Blade_(tex)_NONE
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump Texture.jpg
+map_Kd Texture.jpg
+
+newmtl Blade_top
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.147580 0.150257 0.142311
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Texture.jpg
+
+newmtl Metal
+Ns 174.509804
+Ka 0.000000 0.000000 0.000000
+Kd 0.011735 0.011735 0.011735
+Ks 0.072581 0.072581 0.072581
+Ni 1.000000
+d 1.000000
+illum 2

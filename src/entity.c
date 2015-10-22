@@ -64,7 +64,7 @@ Weapon* weapon_Spawn()
 	return NULL;
 }
 
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons)
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons, int _maxHealth)
 {
 	Entity *ent;
 	ent = ent_Spawn();
@@ -74,6 +74,7 @@ Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colou
 		ent->objModel = obj_load("models/cube.obj");
 	if(bv.selection == 1)
 		ent->objModel = obj_load("models/handgun.obj");
+	ent->health = _maxHealth;
 	ent->body.position = position;
 	ent->body.rotation = vec3d(0,0,0);
 	ent->body.scale = vec3d(0.5,0.5,0.5);

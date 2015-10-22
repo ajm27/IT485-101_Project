@@ -412,7 +412,7 @@ void obj_draw(
     int i;
     ObjTriangle* triangle;
     float trans[4];
-    
+
     if (obj == NULL)
     {
         slog("cannot draw obj, none specified!");

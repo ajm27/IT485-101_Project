@@ -29,6 +29,13 @@ typedef struct Weapon_S
 
 } Weapon;
 
+enum {
+	ENTITY_PLAYER = 0,
+	ENTITY_GUARD,
+	ENTITY_HEAVYG,
+	ENTITY_ARMOUREDG
+} Entity_States;
+
 typedef struct Entity 
 {
 	int		inuse;
@@ -46,11 +53,14 @@ typedef struct Entity
 	Weapon *inventory;
 	int		currentweapon;
 
+	int		maxHealth;
+	int		health;
+
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity
 	struct Entity	*target;	// waypoint of entity to move to onSpawn
 
-	char	classname[50];		// type of entity spawned
+	int		classname;		// type of entity spawned
 
 	void	(*think)(struct Entity *self);		// pointer to entity's think function
 	void	(*update)(struct Entity *self);		// pointer to entity's update function
@@ -59,7 +69,7 @@ typedef struct Entity
 }Entity;
 
 Entity* ent_Spawn();										// Brings entity into game world
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons);
+Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons, int _maxHealth);
 void	ent_SetInventory(Entity *ent, Weapon *weapons);
 void	ent_Draw();
 void	ent_DrawAll();
