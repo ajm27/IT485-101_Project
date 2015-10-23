@@ -64,39 +64,158 @@ Weapon* weapon_Spawn()
 	return NULL;
 }
 
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons, int _maxHealth)
+void ent_Info(Entity* ent)
+{	
+	slog("Entity Name: %s)", ent->body.name);
+	slog("Classname No.: %i", ent->classname);
+	slog("Position: %.2f, %.2f, %.2f", ent->body.position.x, ent->body.position.y, ent->body.position.z);
+	slog("Rotation: %.2f, %.2f, %.2f", ent->body.rotation.x, ent->body.rotation.y, ent->body.rotation.z);
+	slog("Scale: %.2f, %.2f, %.2f", ent->body.scale.x, ent->body.scale.y, ent->body.scale.z);
+}
+
+Entity* ent_New(const char *_name, int _entType)
 {
 	Entity *ent;
 	ent = ent_Spawn();
 	if(!ent) return NULL;
 	
-	if(bv.selection == 2)
-		ent->objModel = obj_load("models/cube.obj");
-	if(bv.selection == 1)
-		ent->objModel = obj_load("models/handgun.obj");
-	ent->health = _maxHealth;
-	ent->body.position = position;
-	ent->body.rotation = vec3d(0,0,0);
-	ent->body.scale = vec3d(0.5,0.5,0.5);
-	ent->hasWeapons = _hasWeapons;
-	if(ent->hasWeapons = 1)
+	if(_entType == ENTITY_PLAYER)
 	{
-		ent->inventory = weapon_Start();
-		//ent_SetInventory(ent,weapon_setup(ent));
-		weapon_setup(ent);
+		ent->classname		= ENTITY_PLAYER;
+
+		//ent->body			= body_Spawn(vec3d(-34,-40,0), vec3d(0,0,0), vec3d(0.5,.5,.5), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+		ent->body.position	= vec3d(-34,-40,0);
+		ent->body.rotation	= vec3d(0,0,0);
+		ent->body.scale		= vec3d(0.5,0.5,0.5);
+		ent->body.ent_BB	= newCube(vec3d(-1,-1,-1), vec3d(2,2,2));
+
+		strcpy(ent->body.name, _name);
+
+		ent->self			= ent;
+
+		ent->objModel		= obj_load("models/cube.obj");
+		ent->colour			= vec4d(1,0,0,1);
+		ent->texture		= LoadSprite("models/white.png",1024,1024);
+
+		ent->maxHealth		= 100;
+		ent->health			= ent->maxHealth;
+
+		ent->hasWeapons		= 1;
+		ent->inventory	= weapon_Start();
+		weapon_setup(ent, ENTITY_PLAYER);
+		ent->currentweapon = 0;
 	}
-	ent->currentweapon = 0;
-	mgl_callback_set(&ent->body.touch,touch_callback,ent);
-	setBoundingVolume(&ent->body.ent_BB, bv);
-	//slog("%s 's bounding volume set.", name);
-	strcpy(ent->body.classname, name);
-	ent->texture = NULL;
-	ent->colour = colour;
+
+	if(_entType == ENTITY_GUARD)
+	{
+		ent->classname		= ENTITY_GUARD;
+
+		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+		ent->body.position	= vec3d(-34,-35,0);
+		ent->body.rotation	= vec3d(0,180,0);
+		ent->body.scale		= vec3d(0.5,0.5,0.5);
+		ent->body.ent_BB	= newCube(vec3d(-1,-1,-1), vec3d(2,2,2));
+		
+		strcpy(ent->body.name, _name);
+
+		ent->self			= ent;
+
+		ent->objModel		= obj_load("models/sphere.obj");
+		ent->colour			= vec4d(0,1,0,1);
+		ent->texture		= LoadSprite("models/white.png",1024,1024);
+
+		ent->maxHealth		= 100;
+		ent->health			= ent->maxHealth;
+
+		ent->hasWeapons		= 1;
+		ent->inventory	= weapon_Start();
+		weapon_setup(ent, ENTITY_GUARD);
+		ent->currentweapon = 1;
+	}
+
+	if(_entType == ENTITY_HEAVYG)
+	{
+		ent->classname		= ENTITY_HEAVYG;
+
+		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+		ent->body.position	= vec3d(-32,-35,0);
+		ent->body.rotation	= vec3d(0,180,0);
+		ent->body.scale		= vec3d(0.5,0.5,0.5);
+		ent->body.ent_BB	= newCube(vec3d(-1,-1,-1), vec3d(2,2,2));
+
+		strcpy(ent->body.name, _name);
+		
+		ent->self			= ent;
+
+		ent->objModel		= obj_load("models/sphere.obj");
+		ent->colour			= vec4d(0,0,1,1);
+		ent->texture		= LoadSprite("models/white.png",1024,1024);
+
+		ent->maxHealth		= 100;
+		ent->health			= ent->maxHealth;
+
+		ent->hasWeapons		= 1;
+		ent->inventory	= weapon_Start();
+		weapon_setup(ent, ENTITY_HEAVYG);
+		ent->currentweapon = 2;
+	}
+
+	if(_entType == ENTITY_ARMOUREDG)
+	{
+		ent->classname		= ENTITY_ARMOUREDG;
+
+		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
+		ent->body.position	= vec3d(-36,-35,0);
+		ent->body.rotation	= vec3d(0,0,0);
+		ent->body.scale		= vec3d(0.5,0.5,0.5);
+		ent->body.ent_BB	= newCube(vec3d(-1,-1,-1), vec3d(2,2,2));
+
+		strcpy(ent->body.name, _name);
+		
+		ent->self			= ent;
+
+		ent->objModel		= obj_load("models/sphere.obj");
+		ent->colour			= vec4d(1,0,1,1);
+		ent->texture		= LoadSprite("models/white.png",1024,1024);
+
+		ent->maxHealth		= 100;
+		ent->health			= ent->maxHealth;
+
+		ent->hasWeapons		= 1;
+		ent->inventory	= weapon_Start();
+		weapon_setup(ent, ENTITY_ARMOUREDG);
+		ent->currentweapon = 3;
+	}
+
+	
+	////if(bv.selection == 2)
+	//	ent->objModel = obj_load("models/cube.obj");
+	////if(bv.selection == 1)
+	//	//ent->objModel = obj_load("models/handgun.obj");
+	//ent->health = 100;
+	//ent->classname = _entType;
+	//ent->body.position = vec3d(-34,-40,0);
+	//ent->body.rotation = vec3d(0,0,0);
+	//ent->body.scale = vec3d(0.5,0.5,0.5);
+	//ent->hasWeapons = 1;
+	//if(ent->hasWeapons = 1)
+	//{
+	//	ent->inventory = weapon_Start();
+	//	//ent_SetInventory(ent,weapon_setup(ent));
+	//	weapon_setup(ent, ENTITY_PLAYER);
+	//}
+	//ent->currentweapon = 0;
+	//mgl_callback_set(&ent->body.touch,touch_callback,ent);
+	////setBoundingVolume(&ent->body.ent_BB, bv);
+	////slog("%s 's bounding volume set.", name);
+	//strcpy(ent->body.name, _name);
+	//ent->texture = NULL;
+	//ent->colour = vec4d(0,0,1,1);
 
 	return ent;
 }
 
-Weapon* weapon_setup(Entity* entity)
+Weapon* weapon_setup(Entity* entity, int _entType)
 {
 	Weapon *weapons;
 	weapons = entity->inventory;

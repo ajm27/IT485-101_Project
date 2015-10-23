@@ -15,7 +15,7 @@ typedef struct Body_S
 
 	MglCallback touch;
 
-	char  classname[50];
+	char  name[50];
 
 	int   needsBackOff;
 	int   backOffDone;

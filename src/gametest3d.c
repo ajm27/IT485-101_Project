@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     Obj *obj,*bgobj;
     Sprite *texture,*bgtext;
 
-	Entity *player, *cube2, *sphere1;
+	Entity *player, *guard, *hguard, *aguard;
 	Space *space;
 
 	Weapon knife, handgun, assault, grenade;
@@ -102,8 +102,10 @@ int main(int argc, char *argv[])
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	player = ent_New("Player", vec3d(-34,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(1,0,0,1), 1, 100);
-	cube2 = ent_New("Cube2", vec3d(-29,-40,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)), vec4d(0,1,0,1), 0, 100);
+	player	= ent_New("Player", ENTITY_PLAYER);
+	guard	= ent_New("Guard", ENTITY_GUARD);
+	hguard	= ent_New("Heavy Guard", ENTITY_HEAVYG);
+	aguard	= ent_New("Armoured Guard", ENTITY_ARMOUREDG);
 	//sphere1 = ent_New("Sphere1", vec3d(-35.5,-40,0), newSphere(vec3d(-1,-1,-1), 1.0), vec4d(1,0,1,1));
 
 	//cube2->body.velocity.x = -0.1;
@@ -111,15 +113,11 @@ int main(int argc, char *argv[])
     space_set_steps(space,100);
 
 	space_add_body(space,&player->body);
-    space_add_body(space,&cube2->body);
+	space_add_body(space,&guard->body);
+	space_add_body(space,&hguard->body);
+	space_add_body(space,&aguard->body);
+    //space_add_body(space,&cube2->body);
 	//space_add_body(space,&sphere1->body);
-
-	weapons[0] = &knife;
-	weapons[1] = &handgun;
-	weapons[2] = &assault;
-	weapons[3] = &grenade;
-
-	//weapon_setup(player, weapons);
 
 	while (bGameLoopRunning)
     {
@@ -257,6 +255,7 @@ int main(int argc, char *argv[])
                 else if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     //cameraRotation.z += 1;
+					ent_Info(player);
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                 {

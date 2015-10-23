@@ -30,7 +30,8 @@ typedef struct Weapon_S
 } Weapon;
 
 enum {
-	ENTITY_PLAYER = 0,
+	ENTITY_NONE = 0,
+	ENTITY_PLAYER,
 	ENTITY_GUARD,
 	ENTITY_HEAVYG,
 	ENTITY_ARMOUREDG
@@ -39,28 +40,27 @@ enum {
 typedef struct Entity 
 {
 	int		inuse;
+	
+	int		classname;		    // type of entity spawned
 	int		uid;		/**<unique id of this entity*/
 
-	int		hasWeapons;
-
-	Vec4D   colour;
-	Sprite  *texture;
-
 	Body    body;
-
-	Obj	    *objModel;
-
-	Weapon *inventory;
-	int		currentweapon;
-
-	int		maxHealth;
-	int		health;
 
 	struct Entity	*self;		// points to self
 	struct Entity	*owner;		// points to who owns the entity
 	struct Entity	*target;	// waypoint of entity to move to onSpawn
+	
+	Obj	    *objModel;
+	Vec4D   colour;
+	Sprite  *texture;
 
-	int		classname;		// type of entity spawned
+	int		hasWeapons;
+	
+	int		maxHealth;
+	int		health;
+
+	Weapon *inventory;
+	int		currentweapon;
 
 	void	(*think)(struct Entity *self);		// pointer to entity's think function
 	void	(*update)(struct Entity *self);		// pointer to entity's update function
@@ -69,8 +69,9 @@ typedef struct Entity
 }Entity;
 
 Entity* ent_Spawn();										// Brings entity into game world
-Entity* ent_New(const char *name, Vec3D position, BoundingVolume bv, Vec4D colour, int _hasWeapons, int _maxHealth);
-void	ent_SetInventory(Entity *ent, Weapon *weapons);
+Entity* ent_New(const char *_name, int entType);
+//void	ent_SetInventory(Entity *ent, Weapon *weapons);
+void	ent_Info(Entity *ent);
 void	ent_Draw();
 void	ent_DrawAll();
 void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
@@ -78,7 +79,7 @@ void	ent_Kill (Entity* ent);								// Removes entity from world and frees up me
 
 Weapon* weapon_Start();
 Weapon* weapon_Spawn();
-Weapon* weapon_setup(Entity *ent);
+Weapon* weapon_setup(Entity *ent, int entType);
 void	weapon_Switch(Entity *ent, int i);
 
 void	touch_callback(void *data, void *context);
