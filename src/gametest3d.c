@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
     SDL_Event e;
     Obj *obj,*bgobj;
     Sprite *texture,*bgtext;
+	float camChange;
 
 	Entity *player, *guard, *hguard, *aguard;
 	Space *space;
@@ -97,15 +98,15 @@ int main(int argc, char *argv[])
     texture = LoadSprite("models/cube_text.png",1024,1024);
 
     bgobj = obj_load("models/map3.obj");
-    bgtext = LoadSprite("models/mountain_text.png",1024,1024);
+    bgtext = LoadSprite("models/white.png",1024,1024);
     
 //    obj = obj_load("models/mountainvillage.obj");
     
 	/* Setting up entities */
-	player	= ent_New("Player", ENTITY_PLAYER);
 	guard	= ent_New("Guard", ENTITY_GUARD);
 	hguard	= ent_New("Heavy Guard", ENTITY_HEAVYG);
 	aguard	= ent_New("Armoured Guard", ENTITY_ARMOUREDG);
+	player	= ent_New("Player", ENTITY_PLAYER);
 	//sphere1 = ent_New("Sphere1", vec3d(-35.5,-40,0), newSphere(vec3d(-1,-1,-1), 1.0), vec4d(1,0,1,1));
 
 	//cube2->body.velocity.x = -0.1;
@@ -255,28 +256,40 @@ int main(int argc, char *argv[])
                 else if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     //cameraRotation.z += 1;
-					ent_Info(player);
+					//ent_Info(player);
+					slog("Rotation: %.2f, %.2f, %.2f)", 
+						player->inventory[player->currentweapon].rotation.x,
+						player->inventory[player->currentweapon].rotation.y,
+						player->inventory[player->currentweapon].rotation.z);
                 }
                 else if (e.key.keysym.sym == SDLK_RIGHT)
                 {
                     //cameraRotation.z -= 1;
-					slog("Camera Pos: %.2f, %.2f, %.2f", cameraPosition.x, cameraPosition.y, cameraPosition.z);
+					/*slog("Camera Pos: %.2f, %.2f, %.2f", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 					slog("Camera Rot: %.2f, %.2f, %.2f", cameraRotation.x, cameraRotation.y, cameraRotation.z);
 					slog("Body Pos: %.2f, %.2f, %.2f", player->body.position.x, player->body.position.y, player->body.position.z);
-					slog("Body Rot: %.2f, %.2f, %.2f", player->body.rotation.x, player->body.rotation.y, player->body.rotation.z);
+					slog("Body Rot: %.2f, %.2f, %.2f", player->body.rotation.x, player->body.rotation.y, player->body.rotation.z);*/
+					slog("Player type: %i", player->classtype);
+					slog("Guard type: %i", guard->classtype);
+					slog("Heavy Gaurd type: %i", hguard->classtype);
+					slog("Armoured Guard type: %i", aguard->classtype);
                 }
                 else if (e.key.keysym.sym == SDLK_UP)
                 {
-					int i;
+					/*int i;
 					for(i = 0; i < 4; i++)
 					{
 						slog("Slot %i: %s", i, player->inventory[i].item_name);
-					}
+					}*/
+					camChange++;
+					slog("Change in cam: %.2f", camChange);
                     //cameraRotation.x += 1;
                 }
                 else if (e.key.keysym.sym == SDLK_DOWN)
                 {
-                    cameraRotation.x -= 1;
+					camChange--;
+					slog("Change in cam: %.2f", camChange);
+                    //cameraRotation.x -= 1;
                 }
             }
         }
@@ -284,6 +297,8 @@ int main(int argc, char *argv[])
         graphics3d_frame_begin();
         
         glPushMatrix();
+
+		ent_DrawPlayer(player, camChange);
 
 		set_camera(
 			rtn_camera_position(cameraPosition, cameraRotation, player->body.position, player->body.rotation),

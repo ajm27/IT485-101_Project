@@ -41,7 +41,7 @@ typedef struct Entity
 {
 	int		inuse;
 	
-	int		classname;		    // type of entity spawned
+	int		classtype;		    // type of entity spawned
 	int		uid;		/**<unique id of this entity*/
 
 	Body    body;
@@ -72,7 +72,8 @@ Entity* ent_Spawn();										// Brings entity into game world
 Entity* ent_New(const char *_name, int entType);
 //void	ent_SetInventory(Entity *ent, Weapon *weapons);
 void	ent_Info(Entity *ent);
-void	ent_Draw();
+void	ent_DrawPlayer(Entity* ent, float camChange);
+void	ent_Draw(Entity* ent);
 void	ent_DrawAll();
 void	ent_CheckCollision ( Entity* self, Entity* other );	// Checks collision between two entities
 void	ent_Kill (Entity* ent);								// Removes entity from world and frees up memory

@@ -37,11 +37,15 @@ Entity* ent_Spawn()
 Weapon* weapon_Start()
 {
 	int i;
+	Weapon* newWeapon;
+
+	newWeapon = (Weapon*) malloc(sizeof(Weapon)*4);
+
 	for(i = 0; i < 4; i++)
 	{
-		weapList[i].inuse = 1;
+		newWeapon[i].inuse = 1;
 	}
-	return weapList;
+	return newWeapon;
 }
 
 Weapon* weapon_Spawn()
@@ -67,7 +71,7 @@ Weapon* weapon_Spawn()
 void ent_Info(Entity* ent)
 {	
 	slog("Entity Name: %s)", ent->body.name);
-	slog("Classname No.: %i", ent->classname);
+	slog("classtype No.: %i", ent->classtype);
 	slog("Position: %.2f, %.2f, %.2f", ent->body.position.x, ent->body.position.y, ent->body.position.z);
 	slog("Rotation: %.2f, %.2f, %.2f", ent->body.rotation.x, ent->body.rotation.y, ent->body.rotation.z);
 	slog("Scale: %.2f, %.2f, %.2f", ent->body.scale.x, ent->body.scale.y, ent->body.scale.z);
@@ -77,11 +81,11 @@ Entity* ent_New(const char *_name, int _entType)
 {
 	Entity *ent;
 	ent = ent_Spawn();
-	if(!ent) return NULL;
+	if(!ent) return;
 	
 	if(_entType == ENTITY_PLAYER)
 	{
-		ent->classname		= ENTITY_PLAYER;
+		ent->classtype		= ENTITY_PLAYER;
 
 		//ent->body			= body_Spawn(vec3d(-34,-40,0), vec3d(0,0,0), vec3d(0.5,.5,.5), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
 		ent->body.position	= vec3d(-34,-40,0);
@@ -108,7 +112,7 @@ Entity* ent_New(const char *_name, int _entType)
 
 	if(_entType == ENTITY_GUARD)
 	{
-		ent->classname		= ENTITY_GUARD;
+		ent->classtype		= ENTITY_GUARD;
 
 		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
 		ent->body.position	= vec3d(-34,-35,0);
@@ -135,7 +139,7 @@ Entity* ent_New(const char *_name, int _entType)
 
 	if(_entType == ENTITY_HEAVYG)
 	{
-		ent->classname		= ENTITY_HEAVYG;
+		ent->classtype		= ENTITY_HEAVYG;
 
 		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
 		ent->body.position	= vec3d(-32,-35,0);
@@ -162,7 +166,7 @@ Entity* ent_New(const char *_name, int _entType)
 
 	if(_entType == ENTITY_ARMOUREDG)
 	{
-		ent->classname		= ENTITY_ARMOUREDG;
+		ent->classtype		= ENTITY_ARMOUREDG;
 
 		//ent->body			= body_Spawn(vec3d(0,0,0), vec3d(0,0,0), vec3d(0,0,0), newCube(vec3d(-1,-1,-1), vec3d(2,2,2)));
 		ent->body.position	= vec3d(-36,-35,0);
@@ -187,13 +191,12 @@ Entity* ent_New(const char *_name, int _entType)
 		ent->currentweapon = 3;
 	}
 
-	
 	////if(bv.selection == 2)
 	//	ent->objModel = obj_load("models/cube.obj");
 	////if(bv.selection == 1)
 	//	//ent->objModel = obj_load("models/handgun.obj");
 	//ent->health = 100;
-	//ent->classname = _entType;
+	//ent->classtype = _entType;
 	//ent->body.position = vec3d(-34,-40,0);
 	//ent->body.rotation = vec3d(0,0,0);
 	//ent->body.scale = vec3d(0.5,0.5,0.5);
@@ -215,66 +218,90 @@ Entity* ent_New(const char *_name, int _entType)
 	return ent;
 }
 
-Weapon* weapon_setup(Entity* entity, int _entType)
+Weapon* weapon_setup(Entity* ent, int _entType)
 {
 	Weapon *weapons;
-	weapons = entity->inventory;
+	weapons = ent->inventory;
 	strcpy(weapons[0].item_name,"weapon_knife");
 	strcpy(weapons[0].ammo_type,"none");
 	weapons[0].max_ammo  = 0;
 	weapons[0].damage	 = 50;
 	weapons[0].offset    = vec3d(.5,1.75,.5);
 	weapons[0].position  = vec3d(0,0,0);
-	weapons[0].rotation  = vec3d(90,90,0);
+	weapons[0].rotation  = vec3d(0,90,30);
 	weapons[0].scale     = vec3d(.125,.125,.125);
-	weapons[0].objmodel  = obj_load("models/knife2.obj");
+	weapons[0].objmodel  = obj_load("models/knife.obj");
 	weapons[0].colour    = vec4d(0,0,0,1);
-	weapons[0].texture	 = LoadSprite("models/cube_text.png",1024,1024);;
+	weapons[0].texture	 = LoadSprite("models/white.png",1024,1024);;
 
 	//slog("Weapon set: %s with ammo %s", weapons[0].item_name, weapons[0].ammo_type);
 
-	weapons = entity->inventory;
+	weapons = ent->inventory;
 	strcpy(weapons[1].item_name,"weapon_handgun");
 	strcpy(weapons[1].ammo_type,"bullets");
 	weapons[1].max_ammo  = 36;
 	weapons[1].damage	 = 25;
 	weapons[1].offset    = vec3d(.5,1.75,.5);
 	weapons[1].position  = vec3d(0,0,0);
-	weapons[1].rotation  = vec3d(90,180,0);
+	if(_entType == ENTITY_PLAYER)
+	{
+		weapons[1].rotation  = vec3d(30,180,0);
+		slog("Handgun rot: %.2f, %.2f, %.2f", ent->inventory[1].rotation.x, 
+											  ent->inventory[1].rotation.y,
+											  ent->inventory[1].rotation.z);
+	}
+	else
+	{
+		weapons[1].rotation  = vec3d(90,180,0);
+	}
 	weapons[1].scale     = vec3d(0.25,0.25,0.25);
 	weapons[1].objmodel  = obj_load("models/handgun.obj");
 	weapons[1].colour    = vec4d(0,0,0,1);
-	weapons[1].texture	 = LoadSprite("models/cube_text.png",1024,1024);;
+	weapons[1].texture	 = LoadSprite("models/white.png",1024,1024);;
 
 	//slog("Weapon set: %s with ammo %s", weapons[1].item_name, weapons[1].ammo_type);
 
-	weapons = entity->inventory;
+	weapons = ent->inventory;
 	strcpy(weapons[2].item_name,"weapon_assaultrifle");
 	strcpy(weapons[2].ammo_type,"bullets");
 	weapons[2].max_ammo  = 120;
 	weapons[2].damage	 = 35;
 	weapons[2].offset    = vec3d(.5,1.75,.5);
 	weapons[2].position  = vec3d(0,0,0);
-	weapons[2].rotation  = vec3d(90,90,0);
+	if(_entType == ENTITY_PLAYER)
+	{
+		weapons[2].rotation  = vec3d(30,90,0);
+	}
+	else
+	{
+		weapons[2].rotation = vec3d(90,90,0);
+	}
 	weapons[2].scale     = vec3d(0.25,0.25,0.25);
 	weapons[2].objmodel  = obj_load("models/M16.obj");
 	weapons[2].colour    = vec4d(0,0,0,1);
-	weapons[2].texture	 = LoadSprite("models/cube_text.png",1024,1024);;
+	weapons[2].texture	 = LoadSprite("models/white.png",1024,1024);;
 
 	//slog("Weapon set: %s with ammo %s", weapons[2].item_name, weapons[2].ammo_type);
 
-	weapons = entity->inventory;
+	weapons = ent->inventory;
 	strcpy(weapons[3].item_name,"weapon_grenade");
 	strcpy(weapons[3].ammo_type,"grenade");
 	weapons[3].max_ammo  = 3;
 	weapons[3].damage	 = 105;
 	weapons[3].offset    = vec3d(.5,1.75,.5);
 	weapons[3].position  = vec3d(0,0,0);
-	weapons[3].rotation  = vec3d(90,0,0);
+	if(_entType == ENTITY_PLAYER)
+	{
+		weapons[3].rotation  = vec3d(30,0,0);
+	}
+	else
+	{
+		weapons[3].rotation  = vec3d(90,0,0);
+	}
 	weapons[3].scale     = vec3d(0.0625,0.0625,0.0625);
 	weapons[3].objmodel  = obj_load("models/grenade.obj");
 	weapons[3].colour    = vec4d(0,0,0,1);
-	weapons[3].texture	 = LoadSprite("models/cube_text.png",1024,1024);;
+	weapons[3].texture	 = LoadSprite("models/white.png",1024,1024);;
 
 	//slog("Weapon set: %s with ammo %s", weapons[3].item_name, weapons[3].ammo_type);
 
@@ -299,6 +326,8 @@ void ent_Draw(Entity *ent)
 {
 	if (!ent) return;
 
+	if(ent->classtype == ENTITY_PLAYER) return;
+
 	obj_draw(
 		ent->objModel,
 		ent->body.position,
@@ -317,6 +346,32 @@ void ent_Draw(Entity *ent)
 		obj_draw(
 			ent->inventory[ent->currentweapon].objmodel,
 			temp,
+			ent->inventory[ent->currentweapon].rotation,
+			ent->inventory[ent->currentweapon].scale,
+			ent->inventory[ent->currentweapon].colour,
+			ent->inventory[ent->currentweapon].texture
+		);
+	}
+}
+
+void ent_DrawPlayer(Entity* ent, float camChange)
+{
+	if (!ent) return;
+
+	obj_draw(
+		ent->objModel,
+		vec3d(0.0f,-1.0f,-7.0f),
+		vec3d(30.0f,0.0f,0.0f),
+		ent->body.scale,
+		ent->colour,
+		ent->texture
+	);
+
+	if(ent->hasWeapons == 1)
+	{
+		obj_draw(
+			ent->inventory[ent->currentweapon].objmodel,
+			vec3d(0.50f,-0.27f,-7.0f),
 			ent->inventory[ent->currentweapon].rotation,
 			ent->inventory[ent->currentweapon].scale,
 			ent->inventory[ent->currentweapon].colour,

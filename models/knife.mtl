@@ -1,43 +1,24 @@
-# Blender MTL File: 'Ka-Bar.blend'
-# Material Count: 4
+# Blender MTL File: 'Combat_Knife.blend'
+# Material Count: 2
 
-newmtl Blade_(tex)
+newmtl Material
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
-illum 2
-map_Kd Texture.jpg
-map_Bump Texture.jpg
+illum 1
+map_Bump .
+map_Kd C:\\Desktop\\Knife_1.png
 
-newmtl Blade_(tex)_NONE
+newmtl Material_Knife_SPEC
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
-Kd 0.640000 0.640000 0.640000
-Ks 0.500000 0.500000 0.500000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
-illum 2
-map_Bump Texture.jpg
-map_Kd Texture.jpg
-
-newmtl Blade_top
-Ns 96.078431
-Ka 0.000000 0.000000 0.000000
-Kd 0.147580 0.150257 0.142311
-Ks 0.500000 0.500000 0.500000
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd Texture.jpg
-
-newmtl Metal
-Ns 174.509804
-Ka 0.000000 0.000000 0.000000
-Kd 0.011735 0.011735 0.011735
-Ks 0.072581 0.072581 0.072581
-Ni 1.000000
-d 1.000000
-illum 2
+illum 1
+map_Bump .
+map_Kd C:\\Desktop\\Knife_1.png
